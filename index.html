@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!--
+Name: Tim Barber, Timothy_Barber@student.uml.edu
+Computer Science Department, UMass Lowell Comp.4610, GUI Programming I
+File: /usr/cs/undergrad/2018/tbarber/public_html/Assignment4/index.html Created: 23-oct-2017
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="CSS/Default.css" />
+  <title>Car Comparor</title>
+  <script src="./lib/jquery.js"></script>
+  <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script src="./dist/jquery.validate.js"></script>
+
+  <script>
+    $(function() {
+      $("#Tables").tabs();
+    });
+  </script>
+
+  <script>
+    $(function() {
+      $("#price-slider").slider({
+        range: true,
+        min: 1,
+        max: 100000,
+        values: [0, 5000],
+        slide: function(event, ui) {
+          $("#startPrice").val(ui.values[0]);
+          $("#endPrice").val(ui.values[1]);
+        }
+      });
+      $("#price").val("$" + $("#slider-3").slider("values", 0) +
+        " - $" + $("#slider-3").slider("values", 1));
+      $("#slider-2").slider({
+        value: 60,
+        animate: "fast",
+        orientation: "horizontal"
+      });
+
+      $("#priceStep-slider").slider({
+        slide: function(event, ui) {
+          $("#priceStep").val(ui.value);
+        }
+      });
+
+      $("#MPG-slider").slider({
+        range: true,
+        min: 1,
+        max: 100000,
+        values: [0, 5000],
+        slide: function(event, ui) {
+          $("#startMPG").val(ui.values[0]);
+          $("#endMPG").val(ui.values[1]);
+        }
+      });
+      $("#price").val("$" + $("#slider-3").slider("values", 0) +
+        " - $" + $("#slider-3").slider("values", 1));
+      $("#slider-2").slider({
+        value: 60,
+        animate: "fast",
+        orientation: "horizontal"
+      });
+
+      $("#MPGStep-slider").slider({
+        slide: function(event, ui) {
+          $("#MPGStep").val(ui.value);
+        }
+      });
+    });
+  </script>
+  <script>
+    function updatePriceSlider(evt) {
+      var start = parseFloat($("#startPrice").val());
+      var end = parseFloat($("#endPrice").val());
+      $("#price-slider").slider("values", 0, start);
+      $("#price-slider").slider("values", 1, end);
+    }
+  </script>
+  <script>
+    function updatePriceStepSlider(evt) {
+      var step = parseFloat($("#priceStep").val());
+      $("#priceStep-slider").slider("value", step);
+    }
+  </script>
+  <script>
+    function updateMPGSlider(evt) {
+      var start = parseFloat($("#startMPG").val());
+      var end = parseFloat($("#endMPG").val());
+      $("#MPG-slider").slider("values", 0, start);
+      $("#MPG-slider").slider("values", 1, end);
+    }
+  </script>
+  <script>
+    function updateMPGStepSlider(evt) {
+      var step = parseFloat($("#MPGStep").val());
+      $("#MPGStep-slider").slider("value", step);
+    }
+  </script>
+
+  <script>
+    $(function() {
+      $("#tabs").tabs();
+    });
+  </script>
+</head>
+
+<body>
+
+  <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Tim's Car Calculator </p>
+  <!--Form to enter table paremeters-->
+
+  <div id="count" style="display: none;">1</div>
+
+  <div id="tabs">
+    <ul>
+      <li><a href="#TableEntry">Start</a></li>
+    </ul>
+    <div id="TableEntry">
+      <form name="tableForm" id="tableForm" method="post">
+        <p>
+          <label for="price">Price range:</label>
+        </p>
+        <div id="price-slider"></div>
+        Starting Price: <input name="startPrice" id="startPrice" onkeyup="updatePriceSlider(event)">
+        <br> Ending Price: <input name="endPrice" id="endPrice" onkeyup="updatePriceSlider(event)">
+
+        <p>
+          <label for="price">Price Steps:</label>
+        </p>
+        <div id="priceStep-slider"></div>
+        <br> Price steps:<input name="priceStep" id="priceStep" onkeyup="updatePriceStepSlider(event)">
+
+        <p>
+          <label for="price">MPG range:</label>
+        </p>
+        <div id="MPG-slider"></div>
+        <br> Starting MPG: <input name="startMPG" id="startMPG" onkeyup="updateMPGSlider(event)">
+        <br> Ending MPG: <input name="endMPG" id="endMPG" onkeyup="updateMPGSlider(event)">
+        <p>
+          <label for="price">MPG Steps:</label>
+        </p>
+        <div id="MPGStep-slider"></div>
+        <br> MPG steps: <input name="MPGStep" id="MPGStep" onkeyup="updateMPGStepSlider(event)">
+        <br><input type="submit" value="Submit">
+      </form>
+      <script>
+        $("#tableForm").validate({
+          rules: {
+            // compound rule for each label
+            startPrice: {
+              required: true,
+              number: true
+            },
+            endPrice: {
+              required: true,
+              number: true
+            },
+            priceStep: {
+              required: true,
+              number: true
+            },
+            startMPG: {
+              required: true,
+              number: true
+            },
+            endMPG: {
+              required: true,
+              number: true
+            },
+            MPGStep: {
+              required: true,
+              number: true
+            },
+          },
+          //Call this function when the form is submitted and validated through jquery
+          submitHandler: function(form) {
+            validateForm();
+          }
+
+        });
+      </script>
+    </div>
+  </div>
+
+
+  <!--Placeholder div for the table to go when Javascript creates it-->
+  <div id=Tables>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
